@@ -1,7 +1,8 @@
 import Inquirer, { DistinctQuestion } from 'inquirer';
 import { Client } from 'node-ssdp';
 
-import { Bridge, LinkButtonError } from '../bridge/Bridge';
+import { LinkButtonError } from '../api/HueAPI';
+import { Bridge } from '../bridge/Bridge';
 
 
 export async function connectToBridge(bridge = Bridge.load()): Promise<Bridge> {

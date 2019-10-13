@@ -1,8 +1,8 @@
 import UPnPClient, { DeviceDescription } from 'node-upnp';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import fs from 'fs';
 
-import { HueAPI } from '../api/HueAPI';
+import * as HueAPI from '../api/HueAPI';
 import { Light } from './Light';
 
 const BRIDGE_STORE_FILENAME = 'store/bridges.json';
@@ -16,20 +16,6 @@ interface BridgeStore {
         username?: string;
     }
 }
-
-interface HueApiError {
-    type: number;
-        description: string;
-}
-
-interface HueAPIResponse<Success extends object> {
-    success?: Success;
-    error?: HueApiError;
-}
-
-type HueAPIResponses<T extends object = object> = HueAPIResponse<T>[];
-
-export class LinkButtonError extends Error {}
 
 export class Bridge {
     deviceDescription: DeviceDescription = {
@@ -93,7 +79,7 @@ export class Bridge {
         const { error, success } = response.data[0];
 
         if (error && error.type === 101) {
-            throw new LinkButtonError('Please press the link button');
+            throw new HueAPI.LinkButtonError('Please press the link button');
         } else if (success) {
             this.username = success.username;
             this.save();
